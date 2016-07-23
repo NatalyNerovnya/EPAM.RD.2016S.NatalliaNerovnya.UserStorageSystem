@@ -11,16 +11,20 @@ namespace BLL
 {
     public class Slave : UserService, ISlave
     {
-       public IMaster Master { get; }
+        public IMaster Master { get; }
         public Slave(IMaster master)
         {
             if (ReferenceEquals(master, null))
                 throw new ArgumentNullException();
-            Master = master;
-            Master.ActionOnAdd += Update;
-            Master.ActionOnDelete += Update;
-
-            
+            if (master.NumberOfSlaves > 0)
+            {
+                Master = master;
+                Master.ActionOnAdd += Update;
+                Master.ActionOnDelete += Update;
+                Master.NumberOfSlaves--;
+            }
+            else
+                throw new ArgumentException();
         }
 
 
@@ -36,7 +40,7 @@ namespace BLL
 
         public void Update()
         {
-            repository.Users = Master.GetRepository().Users; 
+            repository.Users = Master.GetRepository().Users;
             Save();
         }
     }

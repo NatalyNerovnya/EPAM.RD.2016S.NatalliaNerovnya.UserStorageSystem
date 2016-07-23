@@ -11,6 +11,7 @@ namespace BLL.Interfaces
     {
         event Action ActionOnAdd;
         event Action ActionOnDelete;
+        int NumberOfSlaves { get; set; }
 
         IUserRepository GetRepository();
     }
