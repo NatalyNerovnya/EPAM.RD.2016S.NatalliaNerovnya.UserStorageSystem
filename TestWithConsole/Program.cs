@@ -16,6 +16,7 @@ namespace TestWithConsole
             Slave sl1 = new Slave(master);
             Slave sl2 = new Slave(master);
 
+            master.GetAllUsers();
             master.Add(new BllUser()
             {
                 FirstName = "Nata",
@@ -24,7 +25,7 @@ namespace TestWithConsole
                 Gender = Gender.Female
             }
                 );
-
+            
         }
     }
 }
