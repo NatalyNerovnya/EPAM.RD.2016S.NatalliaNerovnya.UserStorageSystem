@@ -12,7 +12,7 @@ using NLog;
 
 namespace BLL.Interfaces
 {
-    public abstract class UserService
+    public abstract class UserService : MarshalByRefObject
     {
         protected IUserRepository repository;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();

@@ -1,24 +1,23 @@
-﻿using DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DAL.Concrete
+﻿namespace DAL.Concrete
 {
+    using System;
+    using System.Collections.Generic;
+    using DAL.Interfaces;
+
     public class UserIdIterator : IUserIdIterator
     {
-
         private IEnumerator<int> iterator;
+
         public UserIdIterator()
-        { iterator = MakeGenerator(); }
+        {
+            this.iterator = this.MakeGenerator();
+        }
 
         public int GetUserId()
         {
-            if (iterator.MoveNext())
+            if (this.iterator.MoveNext())
             {
-                return iterator.Current;
+                return this.iterator.Current;
             }
 
             return -1;
@@ -33,7 +32,9 @@ namespace DAL.Concrete
                 {
                     i++;
                 }
+
                 yield return i;
+
                 checked
                 {
                     i++;
@@ -45,15 +46,21 @@ namespace DAL.Concrete
         private static bool IsPrime(int n)
         {
             if (n >= int.MaxValue)
+            {
                 throw new ArgumentException();
+            }
             if (n < 2)
                 return false;
 
             int sqrt = (int)Math.Pow(n, 0.5);
             for (int i = 2; i <= sqrt; i++)
             {
+
                 if (n % i == 0)
+                {
                     return false;
+                }
+
             }
             return true;
         }

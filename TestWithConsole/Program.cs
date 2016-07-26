@@ -12,11 +12,12 @@ namespace TestWithConsole
     {
         static void Main(string[] args)
         {
-            Master master = Master.GetInstance();
-            Slave sl1 = new Slave(master);
-            Slave sl2 = new Slave(master);
 
-            master.GetAllUsers();
+            InitGroup.InitializeGroup();
+            var master = InitGroup.Master as Master;
+            var sl1 = InitGroup.Slaves[0] as Slave;
+            var sl2 = InitGroup.Slaves[1] as Slave;
+
             master.Add(new BllUser()
             {
                 FirstName = "Nata",
@@ -25,7 +26,54 @@ namespace TestWithConsole
                 Gender = Gender.Female
             }
                 );
+            master.Add(new BllUser()
+            {
+                FirstName = "Natallia",
+                LastName = "Nerovnya",
+                BirthDate = new DateTime(1995, 3, 29),
+                Gender = Gender.Female
+            }
+                );
+            master.Add(new BllUser()
+            {
+                FirstName = "Natasha",
+                LastName = "Nerovnya",
+                BirthDate = new DateTime(1995, 3, 29),
+                Gender = Gender.Female
+            }
+                );
+
+            var users = sl1.GetAllUsers();
             
+
+            //master.GetAllUsers();
+            //master.Add(new BllUser()
+            //{
+            //    FirstName = "Nata",
+            //    LastName = "Nerovnya",
+            //    BirthDate = new DateTime(1995, 3, 29),
+            //    Gender = Gender.Female
+            //}
+            //    );
+            //var all = sl1.GetAllUsers();
+            //var nataId = sl2.SearchForUsers(u => u.FirstName == "Nata").FirstOrDefault();
+            //master.Add(new BllUser()
+            //{
+            //    FirstName = "Natallia",
+            //    LastName = "Nerovnya",
+            //    BirthDate = new DateTime(1995, 3, 29),
+            //    Gender = Gender.Female
+            //}
+            //    );
+            //master.Add(new BllUser()
+            //{
+            //    FirstName = "Natasha",
+            //    LastName = "Nerovnya",
+            //    BirthDate = new DateTime(1995, 3, 29),
+            //    Gender = Gender.Female
+            //}
+            //    );
+            //all = sl2.GetAllUsers();
         }
     }
 }

@@ -1,20 +1,22 @@
-﻿using DAL.Entities;
-using DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Configuration;
-using System.IO;
-
-namespace DAL.Concrete
+﻿namespace DAL.Concrete
 {
-    public class UserRepository : IUserRepository
+    using DAL.Entities;
+    using DAL.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml.Serialization;
+    using System.Configuration;
+    using System.IO;
+
+    public class UserRepository : MarshalByRefObject, IUserRepository
     {
         public List<User> Users { get; set; }
+
         public IUserIdIterator Iterator { get; private set; }
+
         public IValidator Validator { get; private set; }
 
         public UserRepository(IUserIdIterator iterator = null, IValidator val = null )
@@ -70,7 +72,7 @@ namespace DAL.Concrete
                 List<User> users = (List<User>)formatter.Deserialize(sr);
                 foreach (var user in users)
                 {
-                    Users.Add(user);
+                    this.Users.Add(user);
                 }
                 Iterator.MakeGenerator(Users == null ? 0: Users.Last().Id);
 

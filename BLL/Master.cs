@@ -22,10 +22,6 @@ namespace BLL
 
 
         public int NumberOfSlaves { get; set; }
-        public IUserRepository GetRepository()
-        {
-            return repository;
-        }
 
         private Master()
         {
@@ -36,14 +32,13 @@ namespace BLL
         public static Master GetInstance()
         {
             logger.Trace("GetInstance()");
-            return instance ?? (instance = new Master());
-            
+            return instance ?? (instance = new Master());            
         }
 
         public override int Add(BllUser user)
         {
             var id = repository.Add(user.ToDalUser());
-            ActionOnAdd();
+            this.ActionOnAdd();
             logger.Trace("Add user with id " + id.ToString());
             return id;
         }
@@ -52,8 +47,7 @@ namespace BLL
         {
             logger.Trace("Delete user with id " + user.Id.ToString());
             repository.Delete(user.ToDalUser());
-            ActionOnDelete();
+            this.ActionOnDelete();
         }
-        
     }
 }

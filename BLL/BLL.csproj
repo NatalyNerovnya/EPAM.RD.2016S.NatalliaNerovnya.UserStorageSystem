@@ -36,6 +36,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,13 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\GroupCollection.cs" />
+    <Compile Include="Configuration\GroupElement.cs" />
+    <Compile Include="Configuration\RegisterGroup.cs" />
+    <Compile Include="DomainLoader.cs" />
     <Compile Include="Entities\BllUser.cs" />
     <Compile Include="Entities\BllVisa.cs" />
+    <Compile Include="InitGroup.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IMaster.cs" />
     <Compile Include="Interfaces\IRole.cs" />
     <Compile Include="Interfaces\ISlave.cs" />
-    <Compile Include="Interfaces\USerService.cs" />
+    <Compile Include="Interfaces\UserService.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +78,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

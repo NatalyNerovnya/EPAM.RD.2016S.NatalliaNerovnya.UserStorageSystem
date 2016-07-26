@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BLL")]
+[assembly: AssemblyTitle("Domain")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("EPAM Systems")]
-[assembly: AssemblyProduct("BLL")]
+[assembly: AssemblyProduct("Domain")]
 [assembly: AssemblyCopyright("Copyright © EPAM Systems 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("efb8a3ad-0bae-473d-bd41-7e58efd0c762")]
+[assembly: Guid("27a84b9e-88e6-4865-92f5-5088fd52b755")]
 
 // Version information for an assembly consists of the following four values:
 //
