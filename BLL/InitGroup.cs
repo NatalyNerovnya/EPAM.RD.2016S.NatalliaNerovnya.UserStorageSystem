@@ -1,17 +1,15 @@
-﻿using BLL.Configuration;
-using BLL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BLL
+﻿namespace BLL
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using Configuration;
+    using Interfaces;
+
     public static class InitGroup
     {
         public static IMaster Master { get; private set; }
+
         public static List<ISlave> Slaves { get; private set; }
 
         public static void InitializeGroup()
@@ -19,7 +17,7 @@ namespace BLL
             var elements = RegisterGroup.GetConfig().GroupItems;
             Slaves = new List<ISlave>();
 
-            for(int i = 0; i < elements.Count; i++)
+            for (int i = 0; i < elements.Count; i++)
             {
                 AppDomain appDom = AppDomain.CreateDomain(elements[i].Path);
 
@@ -39,5 +37,3 @@ namespace BLL
         }
     }
 }
-
-

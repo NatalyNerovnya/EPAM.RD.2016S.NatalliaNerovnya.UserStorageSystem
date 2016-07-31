@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using DAL.Interfaces;
+    using Interfaces;
 
     public class UserIdIterator : IUserIdIterator
     {
@@ -49,19 +49,21 @@
             {
                 throw new ArgumentException();
             }
+
             if (n < 2)
+            {
                 return false;
+            }
 
             int sqrt = (int)Math.Pow(n, 0.5);
             for (int i = 2; i <= sqrt; i++)
             {
-
                 if (n % i == 0)
                 {
                     return false;
                 }
-
             }
+
             return true;
         }
         #endregion

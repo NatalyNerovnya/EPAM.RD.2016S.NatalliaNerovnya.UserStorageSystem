@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BLL.Entities;
-using BLL.Interfaces;
-using DAL.Interfaces;
-using NLog;
-using System.Diagnostics;
-
-namespace BLL
+﻿namespace BLL
 {
+    using System;
+    using System.Configuration;
+    using Entities;
+    using Interfaces;
+    using NLog;
+
     public class Master : UserService, IMaster
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static Master instance;
-        public event Action ActionOnAdd = delegate { };
-        public event Action ActionOnDelete = delegate { };
-
-
-        public int NumberOfSlaves { get; set; }
 
         private Master()
         {
-            NumberOfSlaves = Int32.Parse(ConfigurationSettings.AppSettings["slavesNumber"]);
-            logger.Trace("Create master");
+#pragma warning disable CS0618 // Type or member is obsolete
+            this.NumberOfSlaves = int.Parse(ConfigurationSettings.AppSettings["slavesNumber"]);
+#pragma warning restore CS0618 // Type or member is obsolete
+            Logger.Trace("Create master");
         }
+        
+        public event Action ActionOnAdd = delegate { };
+
+        public event Action ActionOnDelete = delegate { };
+
+        public int NumberOfSlaves { get; set; }
 
         public static Master GetInstance()
         {
-            logger.Trace("GetInstance()");
+           Logger.Trace("GetInstance()");
             return instance ?? (instance = new Master());            
         }
 
@@ -39,13 +36,13 @@ namespace BLL
         {
             var id = repository.Add(user.ToDalUser());
             this.ActionOnAdd();
-            logger.Trace("Add user with id " + id.ToString());
+            Logger.Trace("Add user with id " + id.ToString());
             return id;
         }
 
         public override void Delete(BllUser user)
         {
-            logger.Trace("Delete user with id " + user.Id.ToString());
+            Logger.Trace("Delete user with id " + user.Id.ToString());
             repository.Delete(user.ToDalUser());
             this.ActionOnDelete();
         }

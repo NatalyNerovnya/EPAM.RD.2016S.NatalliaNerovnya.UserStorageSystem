@@ -5,7 +5,10 @@
     [ConfigurationCollection(typeof(GroupElement))]
     public class GroupCollection : ConfigurationElementCollection
     {
-        public GroupElement this[int idx] => (GroupElement)BaseGet(idx);
+        public GroupElement this[int idx]
+        {
+            get { return BaseGet(idx) as GroupElement; }
+        }
 
         protected override ConfigurationElement CreateNewElement()
         {

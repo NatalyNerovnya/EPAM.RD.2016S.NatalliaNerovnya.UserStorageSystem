@@ -1,13 +1,9 @@
-﻿using BLL.Entities;
-using DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BLL
+﻿namespace BLL
 {
+    using System.Linq;
+    using DAL.Entities;
+    using Entities;
+
     public static class Mapper
     {
         public static User ToDalUser(this BllUser user)
@@ -38,7 +34,8 @@ namespace BLL
 
         public static Visa ToDalVisa(this BllVisa visa)
         {
-            return new Visa {
+            return new Visa
+            {
                 Country = visa.Country,
                 End = visa.End,
                 Start = visa.Start
@@ -54,7 +51,5 @@ namespace BLL
                 Start = visa.Start
             };
         }
-
-
     }
 }

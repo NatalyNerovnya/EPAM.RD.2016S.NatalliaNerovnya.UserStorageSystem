@@ -1,12 +1,8 @@
-﻿using BLL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BLL
+﻿namespace BLL
 {
+    using System;
+    using BLL.Interfaces;
+
     public class DomainLoader : MarshalByRefObject
     {
         public UserService LoadService(string type, IMaster master)
@@ -21,6 +17,5 @@ namespace BLL
                     return null;
             }
         }
-
     }
 }

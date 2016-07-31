@@ -9,30 +9,33 @@
     public class Slave : UserService, ISlave
     {
         private static readonly Logger Loger = LogManager.GetCurrentClassLogger();
-        public IMaster Master { get; }
-        public Slave(IMaster master)
+
+       public Slave(IMaster master)
         {
             Loger.Trace("Create slave for master");
-            if (ReferenceEquals(master, null))
+            if (object.ReferenceEquals(master, null))
             {
                 Loger.Error("master reference is null");
                 throw new ArgumentNullException();
             }
+
             if (master.NumberOfSlaves > 0)
             {
-                Master = master;
-                Master.ActionOnAdd += Update;
-                Master.ActionOnDelete += Update;
-                Master.NumberOfSlaves--;
+                this.Master = master;
+                this.Master.ActionOnAdd += this.Update;
+                this.Master.ActionOnDelete += this.Update;
+                this.Master.NumberOfSlaves--;
             }
             else
             {
                 Loger.Error("master doesn't have available place for slave");
                 throw new ArgumentException();
             }
+
             Loger.Trace("Create slave for master");
         }
 
+        public IMaster Master { get; }
 
         public override int Add(BllUser user)
         {
@@ -49,8 +52,11 @@
         public void Update()
         {
             Loger.Trace("Slave update information");
-            repository.Users = (Master as UserService).GetAllUsers().Select(u=>u.ToDalUser()).ToList();
-            //Save();
+            var userRepository = this.Master as UserService;
+            if (userRepository != null)
+            {
+                repository.Users = userRepository.GetAllUsers().Select(u => u.ToDalUser()).ToList();
+            }
         }
     }
 }
