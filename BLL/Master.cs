@@ -34,8 +34,10 @@
 
         public override int Add(BllUser user)
         {
+            
             var id = repository.Add(user.ToDalUser());
             this.ActionOnAdd();
+            Communicator?.SendAdd();
             Logger.Trace("Add user with id " + id.ToString());
             return id;
         }
@@ -45,6 +47,7 @@
             Logger.Trace("Delete user with id " + user.Id.ToString());
             repository.Delete(user.ToDalUser());
             this.ActionOnDelete();
+            Communicator?.SendDelete();
         }
     }
 }

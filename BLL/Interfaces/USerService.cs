@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Communication;
     using DAL.Concrete;
     using DAL.Entities;
     using DAL.Interfaces;
@@ -19,6 +20,8 @@
             this.logger.Trace("Create new Service");
             this.repository = new UserRepository();
         }
+
+        public Communicator Communicator { get; set; }
 
         public abstract int Add(BllUser user);
 
@@ -54,5 +57,13 @@
             this.logger.Trace("Save()");
             this.repository.Load();
         }
+
+        public virtual void AddCommunicator(Communicator communicator)
+        {
+            if (communicator == null)
+                return;
+            Communicator = communicator;
+        }
+
     }
 }

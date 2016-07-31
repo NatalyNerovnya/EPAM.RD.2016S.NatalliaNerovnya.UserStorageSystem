@@ -1,4 +1,6 @@
-﻿namespace BLL
+﻿using BLL.Communication;
+
+namespace BLL
 {
     using System;
     using System.Linq;
@@ -57,6 +59,13 @@
             {
                 repository.Users = userRepository.GetAllUsers().Select(u => u.ToDalUser()).ToList();
             }
+        }
+
+        public override void AddCommunicator(Communicator communicator)
+        {
+            base.AddCommunicator(communicator);
+            Communicator.UserAdded += Update;
+            Communicator.UserDeleted += Update;
         }
     }
 }
