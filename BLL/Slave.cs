@@ -1,11 +1,10 @@
-﻿using BLL.Communication;
-
-namespace BLL
+﻿namespace BLL
 {
     using System;
     using System.Linq;
-    using BLL.Entities;
-    using BLL.Interfaces;
+    using Communication;
+    using Entities;
+    using Interfaces;
     using NLog;
 
     public class Slave : UserService, ISlave
@@ -37,7 +36,25 @@ namespace BLL
             Loger.Trace("Create slave for master");
         }
 
-        public IMaster Master { get; }
+        public IMaster Master
+        {
+            get;
+        }
+
+        public override Communicator Communicator
+        {
+            get
+            {
+                return base.Communicator;
+            }
+
+            set
+            {
+                base.Communicator = value;
+                this.Communicator.UserAdded += this.Update;
+                this.Communicator.UserDeleted += this.Update;
+            }
+        }
 
         public override int Add(BllUser user)
         {
@@ -64,8 +81,8 @@ namespace BLL
         public override void AddCommunicator(Communicator communicator)
         {
             base.AddCommunicator(communicator);
-            Communicator.UserAdded += Update;
-            Communicator.UserDeleted += Update;
+            this.Communicator.UserAdded += this.Update;
+            this.Communicator.UserDeleted += this.Update;
         }
     }
 }

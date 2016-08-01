@@ -11,7 +11,6 @@
         private Socket listener;
         private Socket reciever;
 
-
         public Receiver(IPAddress ipAddress, int port)
         {
             this.IpEndPoint = new IPEndPoint(ipAddress, port);

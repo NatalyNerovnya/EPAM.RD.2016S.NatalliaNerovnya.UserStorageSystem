@@ -1,16 +1,12 @@
-﻿
-
-namespace TestWithConsole
+﻿namespace TestWithConsole
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Remoting;
     using System.Threading;
     using BLL;
     using BLL.Entities;
-    using BLL.Interfaces;
-    
+
 
     public class Program
     {
@@ -19,8 +15,6 @@ namespace TestWithConsole
             InitGroup.InitializeGroup();
             var master = InitGroup.Master as Master;
             var slaves = InitGroup.Slaves.Select(u => u as Slave).ToList();
-            ShowServicesInfo(new[] {master});
-            ShowServicesInfo(slaves);
             Console.WriteLine("\nPress enter to start: ");
             Console.WriteLine("\nIn the end press esc to finish: ");
             Console.ReadLine();
@@ -42,11 +36,10 @@ namespace TestWithConsole
             {
                 while (true)
                 {
-                    Console.Write("Current thread: " + Thread.CurrentThread.ManagedThreadId + ";(master)\n");
-                    var serachresult = master.SearchForUsers(u => u.FirstName != null);
-                    Console.Write("Master search results: ");
+                    var serachresult = master.GetAllUsers();
+                    Console.Write("Users id( from master with thread id {0}): ", Thread.CurrentThread.ManagedThreadId);
                     foreach (var result in serachresult)
-                        Console.Write(result + " ");
+                        Console.Write(result.Id + " ");
                     Console.WriteLine();
                     Thread.Sleep(rand.Next(1000, 3000));
                 }
@@ -59,24 +52,23 @@ namespace TestWithConsole
                     new BllUser { FirstName = "Natallia", LastName = "Nerovnya"},
                     new BllUser { FirstName = "Nata", LastName = "Nero"},
                 };
-                BllUser userToDelete = null;
 
                 while (true)
                 {
                     foreach (var user in users)
                     {
-                        int addChance = rand.Next(0, 3);
-                        if (addChance == 0)
+                        int chance = rand.Next(0, 3);
+                        if (chance == 0 || chance == 1)
                             master.Add(user);
-
-                        Thread.Sleep(rand.Next(1000, 3000));
-                        if (userToDelete != null)
+                        else
                         {
-                            int deleteChance = rand.Next(0, 3);
-                            if (deleteChance == 0)
-                                master.Delete(userToDelete);
+                            if (master.GetAllUsers().Count != 0)
+                            {
+                                var firstUser = master.GetAllUsers().First();
+                                master.Delete(firstUser);
+                            }
                         }
-                        userToDelete = user;
+
                         Thread.Sleep(rand.Next(1000, 3000));
                         Console.WriteLine();
                     }
@@ -99,40 +91,19 @@ namespace TestWithConsole
                 {
                     while (true)
                     {
-                        var userIds = slave.SearchForUsers(u => !string.IsNullOrWhiteSpace(u.FirstName));
+                        var userIds = slave.GetAllUsers().Select(u => u.Id);
 
-                        Console.Write("Current Thread: " + Thread.CurrentThread.ManagedThreadId + ";(sl)\n");
-                        Console.Write("Slave search results: ");
+                        Console.Write("User id(from slave with thread id {0}): ", Thread.CurrentThread.ManagedThreadId);
                         foreach (var user in userIds)
                             Console.Write(user + " ");
                         Console.WriteLine();
                         Thread.Sleep((int)(rand.NextDouble() * 3000));
-                    }
-
-                });
+                    }});
                 slaveThread.IsBackground = true;
                 slaveThread.Start();
             }
         }
 
-        private static void ShowServicesInfo(IEnumerable<UserService> services)
-        {
-            var servicesList = services.ToList();
-            Console.WriteLine("SERVICES INFO: \n");
-            for (int i = 0; i < servicesList.Count; i++)
-            {
-                var service = servicesList[i];
-                Console.Write($"Service {i} : type = ");
-                if (service is Master)
-                    Console.Write(" Master; ");
-                else
-                {
-                    Console.Write(" Slave; ");
-                }
-                Console.Write("Current Domain: " + AppDomain.CurrentDomain.FriendlyName + "; ");
-                Console.Write("IsProxy: " + RemotingServices.IsTransparentProxy(service) + "; ");
-                Console.WriteLine();
-            }
-        }
+        
     }
 }

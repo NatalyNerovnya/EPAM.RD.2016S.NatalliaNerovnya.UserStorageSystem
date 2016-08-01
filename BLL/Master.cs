@@ -34,7 +34,6 @@
 
         public override int Add(BllUser user)
         {
-            
             var id = repository.Add(user.ToDalUser());
             this.ActionOnAdd();
             Communicator?.SendAdd();

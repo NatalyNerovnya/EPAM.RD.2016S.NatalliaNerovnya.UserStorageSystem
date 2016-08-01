@@ -1,118 +1,128 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using BLL.Entities;
-
-namespace BLL.Communication
+﻿namespace BLL.Communication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     [Serializable]
     public class Communicator : IDisposable
     {
-        public event Action UserAdded;
-        public event Action UserDeleted;
-        private Sender _sender;
+        private Sender sender;
         private Task recieverTask;
         private CancellationTokenSource tokenSource;
-        private Receiver _receiver;
+        private Receiver receiver;
 
         public Communicator(Sender sender, Receiver receiver)
         {
-            _sender = sender;
-            _receiver = receiver;
+            this.sender = sender;
+            this.receiver = receiver;
         }
 
-        public Communicator(Sender sender) : this(sender, null) { }
-        public Communicator(Receiver receiver) : this(null, receiver) { }
+        public Communicator(Sender sender) : this(sender, null)
+        {
+        }
+
+        public Communicator(Receiver receiver) : this(null, receiver)
+        {
+        }
+
+        public event Action UserAdded;
+
+        public event Action UserDeleted;
 
         public void RunReceiver()
         {
-            _receiver.AcceptConnection();
-            if (_receiver == null)
+            this.receiver.AcceptConnection();
+            if (this.receiver == null)
+            {
                 return;
-            tokenSource = new CancellationTokenSource();
-            recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
+            }
 
+            this.tokenSource = new CancellationTokenSource();
+            this.recieverTask = Task.Run((Action)this.ReceiveMessages, this.tokenSource.Token);
         }
-
-        //public async void RunReceiver()
-        //{
-        //    await _receiver.AcceptConnection();
-        //    if (_receiver == null) return;
-        //    tokenSource = new CancellationTokenSource();
-        //    recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
-        //}
 
         public void Connect(IEnumerable<IPEndPoint> endPoints)
         {
-            if (_sender == null)
+            if (this.sender == null)
+            {
                 return;
-            _sender.Connect(endPoints);
+            }
+
+           this.sender.Connect(endPoints);
         }
 
         public void StopReceiver()
         {
-            if (tokenSource.Token.CanBeCanceled)
+            if (this.tokenSource.Token.CanBeCanceled)
             {
-                tokenSource.Cancel();
+                this.tokenSource.Cancel();
             }
+        }
+
+       public void SendAdd()
+        {
+            if (this.sender == null)
+            {
+                return;
+            }
+
+            var id = this.receiver.Receive().UserId;
+            this.Send(new Message(true, id));
+        }
+
+        public void SendDelete()
+        {
+            if (this.sender == null)
+            {
+                return;
+            }
+
+            this.Send(new Message(false, 1));
+        }
+        
+        public void Dispose()
+        {
+           this.receiver?.Dispose();
+            this.sender?.Dispose();
+        }
+
+        protected virtual void OnUserDeleted()
+        {
+            this.UserDeleted?.Invoke();
+        }
+
+        protected virtual void OnUserAdded()
+        {
+            this.UserAdded?.Invoke();
+        }
+
+        private void Send(Message message)
+        {
+            this.sender.Send(message);
         }
 
         private void ReceiveMessages()
         {
             while (true)
             {
-                if (tokenSource.IsCancellationRequested) return;
-                var message = _receiver.Receive();
+                if (this.tokenSource.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                var message = this.receiver.Receive();
                 if (message.IsAdd)
                 {
-                    OnUserAdded();
+                    this.OnUserAdded();
                 }
                 else
                 {
-                    OnUserDeleted();
+                    this.OnUserDeleted();
                 }
             }
-        }
-
-        public void SendAdd()
-        {
-            if (_sender == null)
-                return;
-            //////////////////////
-            var id = _receiver.Receive().UserId;
-            Send(new Message(true, id));
-        }
-        public void SendDelete()
-        {
-            if (_sender == null)
-                return;
-            /////////////////////////
-            Send(new Message(false, 1));
-        }
-
-        private void Send(Message message)
-        {
-            _sender.Send(message);
-        }
-
-        protected virtual void OnUserDeleted()
-        {
-            UserDeleted?.Invoke();
-        }
-
-        protected virtual void OnUserAdded()
-        {
-            UserAdded?.Invoke();
-        }
-
-        public void Dispose()
-        {
-            _receiver?.Dispose();
-            _sender?.Dispose();
         }
     }
 }

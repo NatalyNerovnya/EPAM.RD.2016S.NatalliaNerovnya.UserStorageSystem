@@ -1,7 +1,7 @@
 ﻿namespace BLL
 {
     using System;
-    using BLL.Interfaces;
+    using Interfaces;
 
     public class DomainLoader : MarshalByRefObject
     {

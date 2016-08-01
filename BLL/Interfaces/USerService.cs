@@ -14,6 +14,7 @@
     {
         protected IUserRepository repository;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private Communicator communicator;
 
         public UserService()
         {
@@ -21,7 +22,23 @@
             this.repository = new UserRepository();
         }
 
-        public Communicator Communicator { get; set; }
+        public virtual Communicator Communicator
+        {
+            get
+            {
+                return this.communicator;
+            }
+
+            set
+            {
+                if (object.ReferenceEquals(value, null))
+                {
+                    throw new ArgumentNullException(nameof(value) + " is null!");
+                }
+
+                this.communicator = value;
+            }
+        }     
 
         public abstract int Add(BllUser user);
 
@@ -61,9 +78,11 @@
         public virtual void AddCommunicator(Communicator communicator)
         {
             if (communicator == null)
+            {
                 return;
+            }
+
             Communicator = communicator;
         }
-
     }
 }
