@@ -7,7 +7,6 @@
     using BLL;
     using BLL.Entities;
 
-
     public class Program
     {
         public static void Main(string[] args)
@@ -15,6 +14,7 @@
             InitGroup.InitializeGroup();
             var master = InitGroup.Master as Master;
             var slaves = InitGroup.Slaves.Select(u => u as Slave).ToList();
+            
             Console.WriteLine("\nPress enter to start: ");
             Console.WriteLine("\nIn the end press esc to finish: ");
             Console.ReadLine();
@@ -24,7 +24,9 @@
             {
                 var quit = Console.ReadKey();
                 if (quit.Key == ConsoleKey.Escape)
+                {
                     break;
+                }
             }
         }
 
@@ -39,7 +41,10 @@
                     var serachresult = master.GetAllUsers();
                     Console.Write("Users id( from master with thread id {0}): ", Thread.CurrentThread.ManagedThreadId);
                     foreach (var result in serachresult)
+                    {
                         Console.Write(result.Id + " ");
+                    }
+                       
                     Console.WriteLine();
                     Thread.Sleep(rand.Next(1000, 3000));
                 }
@@ -49,8 +54,8 @@
             {
                 var users = new List<BllUser>
                 {
-                    new BllUser { FirstName = "Natallia", LastName = "Nerovnya"},
-                    new BllUser { FirstName = "Nata", LastName = "Nero"},
+                    new BllUser { FirstName = "Natallia", LastName = "Nerovnya" },
+                    new BllUser { FirstName = "Nata", LastName = "Nero" }
                 };
 
                 while (true)
@@ -59,7 +64,9 @@
                     {
                         int chance = rand.Next(0, 3);
                         if (chance == 0 || chance == 1)
+                        {
                             master.Add(user);
+                        }
                         else
                         {
                             if (master.GetAllUsers().Count != 0)
@@ -95,15 +102,17 @@
 
                         Console.Write("User id(from slave with thread id {0}): ", Thread.CurrentThread.ManagedThreadId);
                         foreach (var user in userIds)
+                        {
                             Console.Write(user + " ");
+                        }
+                            
                         Console.WriteLine();
                         Thread.Sleep((int)(rand.NextDouble() * 3000));
-                    }});
+                     }
+                });
                 slaveThread.IsBackground = true;
                 slaveThread.Start();
             }
         }
-
-        
     }
 }

@@ -25,21 +25,8 @@
 
         public void AcceptConnection()
         {
-            ////Console.WriteLine("Wait Connection");
             this.reciever = this.listener.Accept();
-            ////Console.WriteLine("Connection accepted");
         }
-
-        ////public Task AcceptConnection()
-        ////{
-        ////    return Task.Run(() =>
-        ////    {
-        ////        //Console.WriteLine("Wait Connection");
-        ////        reciever = listener.Accept();
-        ////        //Console.WriteLine("Connection accepted");
-        ////    });
-
-        ////}
 
         public Message Receive()
         {
@@ -51,7 +38,6 @@
                 message = (Message)formatter.Deserialize(networkStream);
             }
 
-            Console.WriteLine("User {0} :  {1}!", message.UserId, message.IsAdd == true ? "add new" : "delete");
             return message;
         }
 

@@ -38,8 +38,6 @@
                     formatter.Serialize(networkStream, message);
                 }
             }
-
-            Console.WriteLine("Message is sent!");
         }
 
         public void Dispose()

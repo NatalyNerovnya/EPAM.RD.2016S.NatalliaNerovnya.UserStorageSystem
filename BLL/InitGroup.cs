@@ -19,7 +19,7 @@
 
             for (int i = 0; i < elements.Count; i++)
             {
-                AppDomain appDom = AppDomain.CreateDomain(elements[i].Path);
+                AppDomain appDom = AppDomain.CreateDomain(elements[i].GroupType + " ( " + i + " );");
 
                 var type = typeof(DomainLoader);
                 var loader = (DomainLoader)appDom.CreateInstanceAndUnwrap(Assembly.GetAssembly(type).FullName, type.FullName);
