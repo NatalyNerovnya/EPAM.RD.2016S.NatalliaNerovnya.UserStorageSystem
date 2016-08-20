@@ -9,6 +9,9 @@
     using Entities;
     using Interfaces;
 
+    /// <summary>
+    /// Storage of users ( in memory)
+    /// </summary>
     public class UserRepository : MarshalByRefObject, IUserRepository
     {
         public UserRepository(IUserIdIterator iterator = null, IValidator val = null)
@@ -25,6 +28,11 @@
 
         public IValidator Validator { get; private set; }
 
+        /// <summary>
+        /// Add user
+        /// </summary>
+        /// <param name="user">user to be add</param>
+        /// <returns>user id or -1 if not validated</returns>
         public int Add(User user)
         {
             if (this.Validator.Validate(user))
@@ -37,22 +45,38 @@
             return -1;
         }
 
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="user">user to be deleted</param>
         public void Delete(User user)
         {
             this.Users.Remove(user);
         }
 
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns>Ienumerable collection of all users</returns>
         public IEnumerable<User> GetAll()
         {
             return this.Users.AsReadOnly();
         }
 
+        /// <summary>
+        /// Not optimized searching by criteria
+        /// </summary>
+        /// <param name="criteria">Func delegate</param>
+        /// <returns></returns>
         public int[] SearchForUsers(Func<User, bool> criteria)
         {
             var results = this.Users.Where(criteria).ToList();
             return results.Select(u => u.Id).ToArray();
         }
 
+        /// <summary>
+        /// Save all users in xml file
+        /// </summary>
         public void Save()
         {
             XmlSerializer foramtter = new XmlSerializer(typeof(List<User>));
@@ -65,6 +89,9 @@
             }
         }
 
+        /// <summary>
+        /// Load users from xml file
+        /// </summary>
         public void Load()
         {
             XmlSerializer formatter = new XmlSerializer(typeof(List<User>));

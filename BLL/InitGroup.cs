@@ -6,12 +6,18 @@
     using Configuration;
     using Interfaces;
 
+    /// <summary>
+    /// Initialize groupe from config file
+    /// </summary>
     public static class InitGroup
     {
         public static IMaster Master { get; private set; }
 
         public static List<ISlave> Slaves { get; private set; }
 
+        /// <summary>
+        /// Create group from config file ( one master and his slaves )
+        /// </summary>
         public static void InitializeGroup()
         {
             var elements = RegisterGroup.GetConfig().GroupItems;

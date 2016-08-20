@@ -4,6 +4,9 @@
     using System.Collections.Generic;
     using Interfaces;
 
+    /// <summary>
+    /// Class for generation id
+    /// </summary>
     public class UserIdIterator : IUserIdIterator
     {
         private IEnumerator<int> iterator;
@@ -13,6 +16,10 @@
             this.iterator = this.MakeGenerator();
         }
 
+        /// <summary>
+        /// Return id
+        /// </summary>
+        /// <returns>id(prime numbers)</returns>
         public int GetUserId()
         {
             if (this.iterator.MoveNext())
@@ -23,6 +30,11 @@
             return -1;
         }
 
+        /// <summary>
+        /// Enumerator for id
+        /// </summary>
+        /// <param name="initialValue">Last id (or 0)</param>
+        /// <returns>prime number</returns>
         public IEnumerator<int> MakeGenerator(int initialValue = 0)
         {
             int i = initialValue;

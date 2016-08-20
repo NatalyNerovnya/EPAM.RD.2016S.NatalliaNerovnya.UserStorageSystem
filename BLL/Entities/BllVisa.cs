@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Visa entity for bll level
+    /// </summary>
     [Serializable]
     public struct BllVisa
     {

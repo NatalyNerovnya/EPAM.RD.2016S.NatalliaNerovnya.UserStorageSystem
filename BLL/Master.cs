@@ -6,6 +6,9 @@
     using Interfaces;
     using NLog;
 
+    /// <summary>
+    /// Master service
+    /// </summary>
     public class Master : UserService, IMaster
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -26,12 +29,21 @@
 
         public int NumberOfSlaves { get; set; }
 
+        /// <summary>
+        /// Return Master reference
+        /// </summary>
+        /// <returns>reference on master</returns>
         public static Master GetInstance()
         {
            Logger.Trace("GetInstance()");
             return instance ?? (instance = new Master());            
         }
 
+        /// <summary>
+        /// Add user
+        /// </summary>
+        /// <param name="user">User to be add</param>
+        /// <returns>id of new user</returns>
         public override int Add(BllUser user)
         {
             var id = repository.Add(user.ToDalUser());
@@ -41,6 +53,10 @@
             return id;
         }
 
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="user">User to be deleted</param>
         public override void Delete(BllUser user)
         {
             Logger.Trace("Delete user with id " + user.Id.ToString());

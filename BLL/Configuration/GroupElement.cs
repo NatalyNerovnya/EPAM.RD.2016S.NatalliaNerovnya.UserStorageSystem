@@ -2,6 +2,9 @@
 {
     using System.Configuration;
 
+    /// <summary>
+    /// Configure services
+    /// </summary>
     public class GroupElement : ConfigurationElement
     {
         [ConfigurationProperty("groupType", DefaultValue = "", IsKey = false, IsRequired = true)]

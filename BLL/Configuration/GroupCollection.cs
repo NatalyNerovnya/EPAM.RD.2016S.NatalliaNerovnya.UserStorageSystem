@@ -2,6 +2,9 @@
 {
     using System.Configuration;
 
+    /// <summary>
+    /// Configure services
+    /// </summary>
     [ConfigurationCollection(typeof(GroupElement))]
     public class GroupCollection : ConfigurationElementCollection
     {

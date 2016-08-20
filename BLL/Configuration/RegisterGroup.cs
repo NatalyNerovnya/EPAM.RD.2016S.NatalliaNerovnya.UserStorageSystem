@@ -2,6 +2,9 @@
 {
     using System.Configuration;
 
+    /// <summary>
+    /// Take group of elements 
+    /// </summary>
     public class RegisterGroup : ConfigurationSection
     {
         [ConfigurationProperty("Group")]

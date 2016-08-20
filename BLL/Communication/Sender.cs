@@ -6,11 +6,18 @@
     using System.Net.Sockets;
     using System.Runtime.Serialization.Formatters.Binary;
 
+    /// <summary>
+    /// class-sender for communication
+    /// </summary>
     [Serializable]
     public class Sender : IDisposable
     {
         private IList<Socket> sockets = new List<Socket>();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ipEndPoints">Collection of ip end points</param>
         public void Connect(IEnumerable<IPEndPoint> ipEndPoints)
         {
             foreach (var ipEndPoint in ipEndPoints)
@@ -21,6 +28,10 @@
             }
         }
 
+        /// <summary>
+        /// Creation and connection to socket
+        /// </summary>
+        /// <param name="ipEndPoint"></param>
         public void Connect(IPEndPoint ipEndPoint)
         {
             var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -28,6 +39,10 @@
             this.sockets.Add(socket);
         }
 
+        /// <summary>
+        /// Send message (serialize)
+        /// </summary>
+        /// <param name="message">Message to be send</param>
         public void Send(Message message)
         {
             foreach (var socket in this.sockets)

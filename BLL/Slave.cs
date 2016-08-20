@@ -7,10 +7,17 @@
     using Interfaces;
     using NLog;
 
+    /// <summary>
+    /// Slave service
+    /// </summary>
     public class Slave : UserService, ISlave
     {
         private static readonly Logger Loger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="master">Master of the groupe</param>
        public Slave(IMaster master)
         {
             Loger.Trace("Create slave for master");
@@ -41,6 +48,9 @@
             get;
         }
 
+        /// <summary>
+        /// For communication work
+        /// </summary>
         public override Communicator Communicator
         {
             get
@@ -56,18 +66,30 @@
             }
         }
 
+        /// <summary>
+        /// Throw exception
+        /// </summary>
+        /// <param name="user">user to be add</param>
+        /// <returns>NotImplementedException</returns>
         public override int Add(BllUser user)
         {
             Loger.Error("Slave try to add user");
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Throw exception
+        /// </summary>
+        /// <param name="user">user to be deleted</param>
         public override void Delete(BllUser user)
         {
             Loger.Error("Slave try to delete user");
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Update repository 
+        /// </summary>
         public void Update()
         {
             Loger.Trace("Slave update information");
@@ -78,6 +100,10 @@
             }
         }
 
+        /// <summary>
+        /// Begin lisstening master
+        /// </summary>
+        /// <param name="communicator"></param>
         public override void AddCommunicator(Communicator communicator)
         {
             base.AddCommunicator(communicator);

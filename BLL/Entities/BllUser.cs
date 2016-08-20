@@ -2,14 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
-    using BLL.Interfaces;
+    using Interfaces;
 
+    /// <summary>
+    /// Genders ( 1 = male )
+    /// </summary>
     public enum Gender
     {
         Male = 1,
         Female
     }
 
+    /// <summary>
+    /// User entity for bll level
+    /// </summary>
     [Serializable]
     public class BllUser : IEntity
     {
