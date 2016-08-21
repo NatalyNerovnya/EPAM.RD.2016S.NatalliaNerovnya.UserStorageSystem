@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DAL.Concrete;
 using DAL.Entities;
 
@@ -107,6 +108,63 @@ namespace UserStorageTests
 
             CollectionAssert.AreEqual((ICollection)result.GetAll(), (ICollection)repo.GetAll());
         }
+
+        [TestMethod]
+        public void RepositoryTests_SearchFor()
+        {
+            var us1 = new User() { FirstName = "Natalia", LastName = "Nerovnya" };
+            var us2 = new User() { FirstName = "nata" };
+            var us3 = new User() { FirstName = "Nataly" };
+            var result = us2;
+
+            repo.Add(us1);
+            repo.Add(us2);
+            repo.Add(us3);
+            repo.Add(user);
+
+            var actual = repo.SearchForUsers(u => u.FirstName == "nata").FirstOrDefault();
+
+            Assert.AreEqual(result.Id, actual);
+        }
+
+        [TestMethod]
+        public void RepositoryTests_SearchForNotExistUser()
+        {
+            var us1 = new User() { FirstName = "Natalia", LastName = "Nerovnya" };
+            var us2 = new User() { FirstName = "nata" };
+            var us3 = new User() { FirstName = "Nataly" };
+
+            repo.Add(us1);
+            repo.Add(us2);
+            repo.Add(us3);
+            repo.Add(user);
+
+            var actual = repo.SearchForUsers(u => u.FirstName == "nataLia").FirstOrDefault();
+
+            Assert.AreEqual(0, actual);
+        }
+
+        [TestMethod]
+        public void RepositoryTests_SearchForManyUsers()
+        {
+            var us1 = new User() { FirstName = "Natalia", LastName = "Nerovnya" };
+            var us2 = new User() { FirstName = "Natalia" };
+            var us3 = new User() { FirstName = "Nataly" };
+
+            repo.Add(us1);
+            repo.Add(us2);
+            repo.Add(us3);
+            repo.Add(user);
+
+            var actual = repo.SearchForUsers(u => u.FirstName == "Natalia").ToArray();
+
+            CollectionAssert.AreEqual(new int[] {2,3}, actual);
+        }
+
+
+
+
+
 
         private UserRepository repo = new UserRepository();
         private User MmmmFool = new User()
